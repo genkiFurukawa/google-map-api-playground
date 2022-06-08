@@ -1,6 +1,8 @@
 <template>
-    <div>地図表示する</div>
-    <div id="map" ref="mapRef"></div>
+  <div
+    id="map"
+    ref="mapRef"
+  />
 </template>
 <script lang="ts">
 import { googleMapApiLoader } from '@/map/index';
@@ -8,7 +10,6 @@ import { defineComponent, onMounted, ref } from 'vue';
 
 export default defineComponent({
     setup() {
-        // eslint-disable-next-line
         let map: google.maps.Map | null = null;
         const mapRef = ref<HTMLElement>();
 
@@ -23,10 +24,21 @@ export default defineComponent({
             });
 
             if (mapRef.value && mapRef.value instanceof HTMLElement) {
-                // eslint-disable-next-line
                 map = new google.maps.Map(mapRef.value, {
                     center: { lat: -34.397, lng: 150.644 },
                     zoom: 8,
+                });
+
+                // ピンを立てる
+                const marker = new google.maps.Marker({
+                    position: { lat: -25.344, lng: 131.031 },
+                    map: map,
+                });
+
+                // 押すと中心位置に移動し、ズームレベルをあげる
+                marker.addListener('click', () => {
+                    map?.panTo({ lat: -25.344, lng: 131.031 });
+                    map?.setZoom(10);
                 });
             }
 
