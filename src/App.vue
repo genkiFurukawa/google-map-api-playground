@@ -1,12 +1,20 @@
 <template>
+  <div>
     <nav>
-        <router-link to="/">Home</router-link> | <router-link to="/about">About</router-link> |
-        <router-link to="/map">Map</router-link>
+      <router-link to="/">
+        Home
+      </router-link> | <router-link to="/about">
+        About
+      </router-link> |
+      <router-link to="/map">
+        Map
+      </router-link>
     </nav>
     <!-- URLのidごとに表示を変えるためのタグ -->
     <div id="app-content">
-        <router-view />
+      <router-view />
     </div>
+  </div>
 </template>
 
 <style>
@@ -20,7 +28,7 @@
 }
 
 #app-content {
-    height: 100%;
+    height: 85vh;
 }
 
 nav {

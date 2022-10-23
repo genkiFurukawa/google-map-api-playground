@@ -50,3 +50,10 @@ $ yarn add @googlemaps/js-api-loader
 
 -   https://developers.google.com/maps/documentation/javascript/using-typescript
 -   https://developers.google.com/maps/documentation/javascript/overview#js_api_loader_package
+
+## パフォーマンス関連
+
+-　[塵も積もれば山となる、Vue.js 製スプレッドシートのパフォーマンス改善記](https://tech.andpad.co.jp/entry/2020/04/28/172129)
+
+-   [Vue 2 で大きなデータを扱うときの性能改善手法](https://tech.stockmark.co.jp/blog/vue2_performance_with_bigdata/)
+-   [Vue.js でお手軽実装！無限スクロールを実装する 2 つの方法](https://tech.bita.jp/article/41)
