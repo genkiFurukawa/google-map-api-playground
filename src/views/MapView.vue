@@ -16,6 +16,20 @@ import { defineComponent, onMounted, ref } from 'vue';
 
 export default defineComponent({
     setup() {
+        const polgonCoords = [
+            {lat: 35.65621910187391, lng: 139.75806652827342},
+            {lat: 35.65398739267577, lng: 139.7574657134781},
+            {lat: 35.65370842464135, lng: 139.759472005741},
+            {lat: 35.655704768174516, lng: 139.75968658245364}
+        ];
+
+        const pinCoord01 = {lat: 35.655417088559226, lng: 139.75903212348015};
+        const pinCoord02 = {lat: 35.655800661149364, lng: 139.75557743840713};
+
+        let polygonSample: google.maps.Polygon | null = null;
+        let marker01 : google.maps.Marker | null = null;
+        let marker02 : google.maps.Marker | null = null;
+
         let mapLeft: google.maps.Map | null = null;
         const mapLeftRef = ref<HTMLElement>();
 
@@ -40,14 +54,7 @@ export default defineComponent({
                 });
 
                 // ポリゴンを描画する
-                const polgonCoords = [
-                    {lat: 35.65621910187391, lng: 139.75806652827342},
-                    {lat: 35.65398739267577, lng: 139.7574657134781},
-                    {lat: 35.65370842464135, lng: 139.759472005741},
-                    {lat: 35.655704768174516, lng: 139.75968658245364}
-                ]
-
-                const polygonSample = new google.maps.Polygon({
+                polygonSample = new google.maps.Polygon({
                     paths: polgonCoords,
                     strokeColor: "#FF0000",
                     strokeOpacity: 0.8,
@@ -61,27 +68,26 @@ export default defineComponent({
                 // ポリゴンをクリックしたら右側の地図のピンの色を変える
                 polygonSample.addListener('click', () => {
                     console.log("click");
-                    polygonSample.setOptions({
-                        strokeColor: "#00FF00",
-                        fillColor: "#00FF00",
-                    });
+                    if (polygonSample) {
+                        polygonSample.setOptions({
+                            strokeColor: "#00FF00",
+                            fillColor: "#00FF00",
+                        });
+                    }
+
+                    // 右の地図のズームを変える
                     if (mapLeft != null && mapRight != null) {
-                        // 右の地図のズームを変える
                         mapRight.setCenter(mapLeft.getCenter() as  google.maps.LatLng);
                         mapRight.setZoom(mapLeft.getZoom() as number);
                     }
-                });
 
-                // ピンを立てる
-                const marker = new google.maps.Marker({
-                    position: { lat: -25.344, lng: 131.031 },
-                    map: mapLeft ,
-                });
-
-                // 押すと中心位置に移動し、ズームレベルをあげる
-                marker.addListener('click', () => {
-                    mapLeft?.panTo({ lat: -25.344, lng: 131.031 });
-                    mapLeft?.setZoom(10);
+                    // 左の地図マーカーの色を変える
+                    // https://developers.google.com/maps/documentation/javascript/reference/marker#Marker.setIcon
+                    if (marker01) {
+                        marker01.setIcon({
+                            url: "http://maps.google.com/mapfiles/ms/icons/green-dot.png"
+                        });
+                    }
                 });
             }
             
@@ -91,6 +97,20 @@ export default defineComponent({
                     center: { lat: 35.65470224381655, lng: 139.7586351565618 },
                     zoom: 17,
                 });
+
+                marker01 = new google.maps.Marker({
+                    position: pinCoord01,
+                    map: mapLeft ,
+                });
+
+                marker01.setMap(mapRight);
+
+                marker02 = new google.maps.Marker({
+                    position: pinCoord02,
+                    map: mapLeft ,
+                });
+
+                marker02.setMap(mapRight);
             }
 
             console.log(mapRight);
